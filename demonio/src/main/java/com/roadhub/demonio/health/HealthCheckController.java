@@ -43,8 +43,7 @@ public class HealthCheckController {
         produto.setDescricao("PC GAMER GAMER cOM LED");
         produto.setNome("Pc Intel platinum");
         produto.setValorUnitario(1000.00);
-        produto.getDataPrazo(LocalDate.now());
-        produto.getDataValidade(LocalDate.now());
+
         produto.setPrecoCompra(850.00);
         produto.setStatus(Status.DISPONIVEL);
         produto.setEstocavel(Boolean.TRUE);

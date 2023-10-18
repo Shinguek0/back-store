@@ -1,6 +1,7 @@
 package com.roadhub.demonio.resource;
 
 import com.roadhub.demonio.model.Produto;
+import com.roadhub.demonio.service.NotFoundException;
 import com.roadhub.demonio.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,16 @@ public class ProdutoController {
     public ResponseEntity remove(@PathVariable("id") Long id){
         service.remover(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Produto entity) {
+        try {
+            Produto alterado = service.alterar(id, entity);
+            return ResponseEntity.ok().body(alterado);
+        } catch (NotFoundException nfe) {
+            return ResponseEntity.noContent().build();
+        }
     }
 
 }

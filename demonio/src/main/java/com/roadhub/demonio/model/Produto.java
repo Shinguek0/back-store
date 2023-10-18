@@ -68,7 +68,7 @@ public class Produto extends ItemVendavel{
         this.precoCompra = precoCompra;
     }
 
-    public LocalDate getDataValidade(LocalDate now) {
+    public LocalDate getDataValidade() {
         return dataValidade;
     }
 
