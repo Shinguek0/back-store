@@ -22,6 +22,14 @@ public class ProdutoService {
     private ModelMapper modelMapper;
 
     public Produto salvar(Produto entity) {
+
+        if (entity.getValorUnitario() < entity.getPrecoCompra()) {
+            throw new ValidationException("O valor unítario não pode ser menor que o preço do produto");
+        }
+
+        if (!repository.findAll(QProduto.produto.descricao.eq(entity.getDescricao())).isEmpty()) {
+            throw new ValidationException("Já existe produto com essa descrição Amigão, se toca meu");
+        }
         return repository.save(entity);
     }
 
