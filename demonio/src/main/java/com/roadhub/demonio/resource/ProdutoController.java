@@ -4,9 +4,13 @@ import com.roadhub.demonio.model.Produto;
 import com.roadhub.demonio.service.NotFoundException;
 import com.roadhub.demonio.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -17,15 +21,24 @@ public class ProdutoController extends AbstractController{
     private ProdutoService service;
 
     @PostMapping
-    public ResponseEntity create(@RequestBody Produto entity){
+    public ResponseEntity create(@RequestBody @Valid Produto entity){
         Produto save = service.salvar(entity);
         return ResponseEntity.created(URI.create("/api/produtos/" + entity.getId())).body(save);
     }
 
     @GetMapping
-    public ResponseEntity findAll(){
-        List<Produto> produtos = service.buscaTodos();
-        return ResponseEntity.ok(produtos);
+    public ResponseEntity findAll(@RequestParam(required = false) String filter,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size){
+
+        Page<Produto> produtos = service.buscaTodos(filter, PageRequest.of(page, size));
+        //List<Produto> produtos = service.buscaTodos(filter);
+        //List<ProdutoDTO> produtoDTOS = ProdutoDTO.fromEntity(produtos);
+        List<ProdutoDTO> produtoDTOS = ProdutoDTO.fromEntity(produtos.getContent());
+        /**Page<ProdutoDTO> produtoDTOPage = new PageImpl<>(produtoDTOS, produtos.getPageable(), produtos.getTotalElements());**/
+        //return ResponseEntity.ok(produtos);
+        //return ResponseEntity.ok(produtoDTOS);
+        return ResponseEntity.ok(produtoDTOS);
     }
 
     @GetMapping("{id}")

@@ -1,10 +1,14 @@
 package com.roadhub.demonio.model;
 
+
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 @Entity
 @DiscriminatorValue("produto")
 public class Produto extends ItemVendavel{
+    @NotNull(message = "O produto precisa de nome o seu animal de 4 teta filho da puta")
     @Column(name = "nome", length = 100, nullable = true)
     private String nome;
 //    private String descricao;
